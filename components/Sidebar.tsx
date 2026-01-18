@@ -79,14 +79,14 @@ export function Sidebar({
         ) : (
           <div className="space-y-1">
             {conversations.map((conv) => (
-              <button
+              <div
                 key={conv.id}
-                onClick={() => onSelectConversation(conv.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group ${
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group cursor-pointer ${
                   currentConversationId === conv.id
                     ? 'bg-gray-200 dark:bg-gray-800'
                     : 'hover:bg-gray-200 dark:hover:bg-gray-800'
                 }`}
+                onClick={() => onSelectConversation(conv.id)}
               >
                 <MessageSquare size={16} className="flex-shrink-0 text-gray-600 dark:text-gray-400" />
                 <span className="flex-1 text-left text-sm truncate text-gray-900 dark:text-gray-100">
@@ -99,7 +99,7 @@ export function Sidebar({
                 >
                   <Trash2 size={14} />
                 </button>
-              </button>
+              </div>
             ))}
           </div>
         )}

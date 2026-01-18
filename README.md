@@ -7,7 +7,10 @@ A production-ready Next.js web application featuring an AI chatbot with text, vo
 - **Text-Based Chat**: Real-time AI conversations with streaming responses
 - **Voice Input**: Speech-to-Text using OpenAI Whisper API
 - **Voice Output**: Text-to-Speech with natural-sounding voices (OpenAI TTS)
-- **Live Avatar**: Animated avatar with lip-sync and state-based animations
+- **3D Realistic Avatars**: Professional 3D avatars powered by Ready Player Me
+- **Live Chat Mode**: Continuous voice conversation with automatic turn-taking
+- **Avatar Lip-Sync**: Mouth animations synchronized with audio levels
+- **Avatar Customization**: Choose from presets or create your own avatar
 - **Chat History**: Persistent conversations using PostgreSQL (Neon DB)
 - **Dark/Light Theme**: Smooth theme switching with preference persistence
 - **Markdown Support**: Rich text rendering with code syntax highlighting
@@ -19,6 +22,9 @@ A production-ready Next.js web application featuring an AI chatbot with text, vo
 - **Next.js 15** (App Router)
 - **TypeScript**
 - **Tailwind CSS**
+- **Three.js** (3D rendering)
+- **React Three Fiber** (React + Three.js)
+- **Ready Player Me** (3D avatars)
 - **Framer Motion** (animations)
 - **Zustand** (state management)
 - **React Markdown** (markdown rendering)

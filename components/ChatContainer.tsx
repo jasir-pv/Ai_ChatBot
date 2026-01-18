@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
-import { Avatar } from './Avatar';
+import { HeyGenAvatar, HeyGenAvatarRef } from './HeyGenAvatar';
+import { AvatarSelector } from './AvatarSelector';
 import { LiveModeButton } from './LiveModeButton';
 import { useChat } from '@/lib/hooks/use-chat';
 import { useTextToSpeech } from '@/lib/hooks/use-text-to-speech';
@@ -15,6 +16,7 @@ export function ChatContainer() {
   const { isPlaying, audioLevel, speak } = useTextToSpeech();
   const { isRecording, isProcessing, startRecording, stopRecording } = useVoiceRecording();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const avatarRef = useRef<HeyGenAvatarRef>(null);
   const { currentConversationId } = useChatStore();
 
   // Live mode state
@@ -22,6 +24,9 @@ export function ChatContainer() {
   const [liveStatus, setLiveStatus] = useState<'idle' | 'listening' | 'processing' | 'speaking'>('idle');
   const shouldContinueRef = useRef(false);
   const lastMessageCountRef = useRef(0);
+
+  // Avatar state
+  const [avatarUrl, setAvatarUrl] = useState('https://models.readyplayer.me/6585eb9c01aacc03ad2e7f5b.glb');
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -99,15 +104,22 @@ export function ChatContainer() {
   return (
     <div className="flex flex-col h-screen">
       {/* Avatar Section */}
-      <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-        <Avatar
+      <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+        {/* Avatar Selector */}
+        <div className="flex justify-center mb-4">
+          <AvatarSelector currentAvatar={avatarUrl} onAvatarChange={setAvatarUrl} />
+        </div>
+
+        {/* HeyGen Live Avatar */}
+        <HeyGenAvatar
+          ref={avatarRef}
           isListening={isLiveMode && liveStatus === 'listening'}
           isSpeaking={isPlaying}
           audioLevel={audioLevel}
         />
 
         {/* Live Mode Button */}
-        <div className="pb-4">
+        <div className="pb-4 pt-4">
           <LiveModeButton
             isActive={isLiveMode}
             status={liveStatus}

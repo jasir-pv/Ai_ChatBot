@@ -3,7 +3,13 @@
     "allow": [
       "Bash(npm install)",
       "Bash(npm run db:push:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.heygen.com)",
+      "Bash(node -e:*)",
+      "Bash(node test-heygen-api.js:*)",
+      "WebFetch(domain:help.heygen.com)"
     ]
   }
 }
