@@ -101,13 +101,10 @@ export const HeyGenAvatar = forwardRef<HeyGenAvatarRef, HeyGenAvatarProps>(
           console.log('Avatar stopped talking');
         });
 
-        // Start avatar session
+        // Start avatar session with valid public avatar
         const sessionData = await avatar.createStartAvatar({
           quality: AvatarQuality.High,
-          avatarName: 'Anna_public_3_20240108',
-          voice: {
-            voiceId: 'en-US-JennyNeural',
-          },
+          avatarName: 'Wayne_20240711', // Popular public avatar
         });
 
         console.log('Avatar session started:', sessionData);

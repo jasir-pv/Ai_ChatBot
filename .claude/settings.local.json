@@ -9,7 +9,9 @@
       "WebFetch(domain:docs.heygen.com)",
       "Bash(node -e:*)",
       "Bash(node test-heygen-api.js:*)",
-      "WebFetch(domain:help.heygen.com)"
+      "WebFetch(domain:help.heygen.com)",
+      "Bash(node:*)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }
