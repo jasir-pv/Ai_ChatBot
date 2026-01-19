@@ -55,6 +55,13 @@ export const HeyGenAvatar = forwardRef<HeyGenAvatarRef, HeyGenAvatarProps>(
     useEffect(() => {
       if (stream && mediaStreamRef.current) {
         mediaStreamRef.current.srcObject = stream;
+        mediaStreamRef.current.onloadedmetadata = () => {
+          // Video will autoplay since it's muted
+          mediaStreamRef.current?.play().catch((err) => {
+            console.warn('Video autoplay blocked (expected):', err.message);
+            // User can click anywhere to trigger play
+          });
+        };
       }
     }, [stream]);
 
@@ -81,9 +88,13 @@ export const HeyGenAvatar = forwardRef<HeyGenAvatarRef, HeyGenAvatarProps>(
 
         // Set up event listeners
         avatar.on(StreamingEvents.STREAM_READY, (event) => {
-          console.log('Stream ready:', event);
+          console.log('Stream ready event fired!', event);
+          console.log('Stream detail:', event.detail);
           if (event.detail) {
+            console.log('Setting stream to video element');
             setStream(event.detail);
+          } else {
+            console.error('No stream detail in STREAM_READY event');
           }
         });
 
@@ -102,12 +113,15 @@ export const HeyGenAvatar = forwardRef<HeyGenAvatarRef, HeyGenAvatarProps>(
         });
 
         // Start avatar session with valid public avatar
+        console.log('Creating avatar session...');
         const sessionData = await avatar.createStartAvatar({
-          quality: AvatarQuality.High,
-          avatarName: 'Wayne_20240711', // Popular public avatar
+          quality: AvatarQuality.Low,
+          avatarName: 'Marianne_ProfessionalLook_public', // From our avatar list
         });
 
-        console.log('Avatar session started:', sessionData);
+        console.log('✅ Avatar session started successfully!');
+        console.log('Session ID:', sessionData.session_id);
+        console.log('Session data:', sessionData);
         setSessionId(sessionData.session_id);
         setIsReady(true);
         setIsLoading(false);
@@ -116,6 +130,12 @@ export const HeyGenAvatar = forwardRef<HeyGenAvatarRef, HeyGenAvatarProps>(
         const errorMessage =
           err instanceof Error ? err.message : 'Failed to initialize avatar';
         console.error('HeyGen Avatar Error:', err);
+
+        // Log full error details
+        if (err && typeof err === 'object') {
+          console.error('Full error object:', JSON.stringify(err, null, 2));
+        }
+
         setError(errorMessage);
         setIsLoading(false);
         onError?.(errorMessage);
@@ -144,7 +164,7 @@ export const HeyGenAvatar = forwardRef<HeyGenAvatarRef, HeyGenAvatarProps>(
 
     if (error) {
       return (
-        <div className="w-full h-96 bg-gradient-to-b from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-lg overflow-hidden flex items-center justify-center">
+        <div className="w-full h-80 bg-gradient-to-b from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-lg overflow-hidden flex items-center justify-center">
           <div className="text-center p-8">
             <div className="text-red-500 mb-4">
               <svg
@@ -179,7 +199,7 @@ export const HeyGenAvatar = forwardRef<HeyGenAvatarRef, HeyGenAvatarProps>(
     }
 
     return (
-      <div className="relative w-full h-96 bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-lg overflow-hidden">
+      <div className="relative w-full h-80 bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-lg overflow-hidden">
         {/* Loading State */}
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-10">
@@ -200,6 +220,7 @@ export const HeyGenAvatar = forwardRef<HeyGenAvatarRef, HeyGenAvatarProps>(
           ref={mediaStreamRef}
           autoPlay
           playsInline
+          muted
           className="w-full h-full object-cover"
           style={{ transform: 'scaleX(-1)' }}
         />
